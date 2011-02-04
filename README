@@ -1,0 +1,31 @@
+virt-thinpro
+============
+Virt-ThinProvisioning
+Virtualmachine ThinProvisioning Clone Tool
+
+Usage
+-----
+
+virt-thinpro.rb [options]
+    -o, --original <VM Name>         Original Domain Name
+    -n, --new <New VM Name>          New Domain Name
+    -i, --ip <New VM IP>             New Domain IP
+
+License
+----
+GPLv2+
+
+Note
+-----
+This programme is works under RHEL6 Host and RHEL6 Guest only.
+However, Fedora13 or 14 might work. maybe.
+
+The following package might be necessary for it and you.
+
+- ruby-1.8.7
+- ruby-libvirt-0.3.0
+- libvirt
+- libvirt-client
+- qemu-img
+- python-virtinst(virt-clone)
+- guestfish-1.2.7
