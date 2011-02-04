@@ -186,7 +186,7 @@ if OPTIONS[:org_dom] and OPTIONS[:new_dom] and OPTIONS[:new_dom_ip] then
 
 
   rescue => ex
-    puts "Error #{ex.message}"
+    abort("Error #{ex.message}")
   else
     puts  "Success: #{OPTIONS[:new_dom]}"
   ensure
@@ -195,6 +195,6 @@ if OPTIONS[:org_dom] and OPTIONS[:new_dom] and OPTIONS[:new_dom_ip] then
     end
   end
 else
-  puts "Help: virt-thinpro.rb -h"
+  abort("Help: virt-thinpro.rb -h")
 end
 
