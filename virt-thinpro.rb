@@ -4,7 +4,13 @@ require 'optparse'
 require 'rexml/document'
 #require 'guestfs'
 
-# Virt-ThinProvisioning 
+# Virt-ThinProvisioning
+# clone VM and setting NewVM's Network device
+#
+# Copyright (c) 2011 Kazuhisa Hara (https://github.com/kazuhisya)
+#
+# Released under an GPLv2+
+# 
 # Usage: virt-thinpro [options]
 #     -o, --original <VM Name>         Original Domain Name
 #          -n, --new <New VM Name>          New Domain Name
