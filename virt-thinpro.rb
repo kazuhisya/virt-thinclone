@@ -10,15 +10,17 @@ require 'rexml/document'
 # Copyright (c) 2011 Kazuhisa Hara (https://github.com/kazuhisya)
 #
 # Released under an GPLv2+
-# 
+#
 # Usage: virt-thinpro [options]
-#     -o, --original <VM Name>         Original Domain Name
-#          -n, --new <New VM Name>          New Domain Name
-#          -i, --ip <New VM IP>             New Domain IP
+#     -o, --original <name>            Original Domain Name: Necessary
+#     -n, --new <name>                 New Domain Name: Necessary
+#     -i, --ip <ip>                    New Domain IP: Necessary
+#     -m, --mask <netmask>             New Domain NetMask: Default 255.255.255.0
+#     -g, --gate <gateway>             New Domain DefaultGateway: Default 192.168.0.1
+#     -p, --partition <partition>      Dom root Partition Name: Default /dev/mapper/VolGroup-lv_root
+#     -s, --snap <snapshot>            New Dom Fast Snapshot Name: Default provisioning_default
 
-
-
-### config
+### Default Config
 qemu_img = "/usr/bin/qemu-img"
 virt_clone = "/usr/bin/virt-clone"
 guestfish = "/usr/bin/guestfish"
@@ -35,22 +37,51 @@ OPTIONS = {
 }
 
 ARGV.options do |opts|
-  opts.on("-o", "--original <VM Name>", "Original Domain Name") {|org_dom|
+  opts.on("-o", "--original <name>", "Original Domain Name: Necessary") {|org_dom|
     OPTIONS[:org_dom] = org_dom
   }
 
-  opts.on("-n", "--new <New VM Name>", "New Domain Name") {|new_dom|
+  opts.on("-n", "--new <name>", "New Domain Name: Necessary") {|new_dom|
     OPTIONS[:new_dom] = new_dom
   }
 
-  opts.on("-i", "--ip <New VM IP>", "New Domain IP") {|new_dom_ip|
+  opts.on("-i", "--ip <ip>", "New Domain IP: Necessary") {|new_dom_ip|
     OPTIONS[:new_dom_ip] = new_dom_ip
+  }
+
+  opts.on("-m", "--mask <netmask>", "New Domain NetMask: Default #{guest_mask}") {|new_dom_mask|
+    OPTIONS[:new_dom_mask] = new_dom_mask
+    unless OPTIONS[:new_dom_mask].nil?
+      guest_mask = OPTIONS[:new_dom_mask]
+    end
+  }
+
+  opts.on("-g", "--gate <gateway>", "New Domain DefaultGateway: Default #{guest_gate}") {|new_dom_gate|
+    OPTIONS[:new_dom_gate] = new_dom_gate
+    unless OPTIONS[:new_dom_gate].nil?
+      guest_gate = OPTIONS[:new_dom_gate]
+    end
+  }
+
+  opts.on("-p", "--partition <partition>", "Dom root Partition Name: Default #{guest_root_part}") {|new_dom_part|
+    OPTIONS[:new_dom_part] = new_dom_part
+    unless OPTIONS[:new_dom_part].nil?
+      guest_root_part = OPTIONS[:new_dom_part]
+    end
+  }
+
+  opts.on("-s", "--snap <snapshot>", "New Dom Fast Snapshot Name: Default #{snap_name}") {|new_dom_snap|
+    OPTIONS[:new_dom_snap] = new_dom_snap
+    unless OPTIONS[:new_dom_snap].nil?
+      snap_name = OPTIONS[:new_dom_snap]
+    end
   }
 
   opts.parse!
 end
 
-if OPTIONS[:org_dom] and OPTIONS[:new_dom] then
+
+if OPTIONS[:org_dom] and OPTIONS[:new_dom] and OPTIONS[:new_dom_ip] then
   begin
 
     # create tmp dir
@@ -166,3 +197,4 @@ if OPTIONS[:org_dom] and OPTIONS[:new_dom] then
 else
   puts "Help: virt-thinpro.rb -h"
 end
+
