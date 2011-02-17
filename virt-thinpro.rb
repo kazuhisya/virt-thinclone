@@ -17,8 +17,9 @@ require 'rexml/document'
 #     -i, --ip <ip>                    New Domain IP: Necessary
 #     -m, --mask <netmask>             New Domain NetMask: Default 255.255.255.0
 #     -g, --gate <gateway>             New Domain DefaultGateway: Default 192.168.0.1
+#     -M, --MAC <mac>                  New Domain mac address: Default random
 #     -p, --partition <partition>      Dom root Partition Name: Default /dev/mapper/VolGroup-lv_root
-#     -s, --snap <snapshot>            New Dom Fast Snapshot Name: Default provisioning_default
+#     -s, --snap <snapshot>            New Domain Fast Snapshot Name: Default provisioning_default
 
 ### Default Config
 qemu_img = "/usr/bin/qemu-img"
@@ -28,6 +29,7 @@ tmp = "/tmp/virt-thinpro"
 
 guest_mask = "255.255.255.0"
 guest_gate = "192.168.0.1"
+guest_mac = nil
 guest_root_part = "/dev/mapper/VolGroup-lv_root"
 snap_name = "provisioning_default"
 ###
@@ -63,6 +65,13 @@ ARGV.options do |opts|
     end
   }
 
+  opts.on("-M", "--mac <mac>", "New Domain mac address: Default random") {|new_dom_mac|
+    OPTIONS[:new_dom_mac] = new_dom_mac
+    unless OPTIONS[:new_dom_mac].nil?
+      guest_mac = OPTIONS[:new_dom_mac]
+    end
+  }
+
   opts.on("-p", "--partition <partition>", "Dom root Partition Name: Default #{guest_root_part}") {|new_dom_part|
     OPTIONS[:new_dom_part] = new_dom_part
     unless OPTIONS[:new_dom_part].nil?
@@ -70,7 +79,7 @@ ARGV.options do |opts|
     end
   }
 
-  opts.on("-s", "--snap <snapshot>", "New Dom Fast Snapshot Name: Default #{snap_name}") {|new_dom_snap|
+  opts.on("-s", "--snap <snapshot>", "New Domain Fast Snapshot Name: Default #{snap_name}") {|new_dom_snap|
     OPTIONS[:new_dom_snap] = new_dom_snap
     unless OPTIONS[:new_dom_snap].nil?
       snap_name = OPTIONS[:new_dom_snap]
@@ -113,7 +122,12 @@ if OPTIONS[:org_dom] and OPTIONS[:new_dom] and OPTIONS[:new_dom_ip] then
     create_new_disk = system(create_disk_cmd)
 
     # do virt-clone
-    clone_cmd = "#{virt_clone} -o #{OPTIONS[:org_dom]} -n #{OPTIONS[:new_dom]} -f #{new_disk_path} --preserve-data"
+    if guest_mac.nil?
+      clone_cmd = "#{virt_clone} -o #{OPTIONS[:org_dom]} -n #{OPTIONS[:new_dom]} -f #{new_disk_path} --preserve-data"
+    else
+      clone_cmd = "#{virt_clone} -o #{OPTIONS[:org_dom]} -n #{OPTIONS[:new_dom]} -f #{new_disk_path} -m #{guest_mac} --preserve-data"
+    end
+    
     #p clone_cmd
     do_virt_clone = system(clone_cmd)
 

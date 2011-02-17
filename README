@@ -10,9 +10,10 @@ Usage: virt-thinpro [options]
     -n, --new <name>                 New Domain Name: Necessary
     -i, --ip <ip>                    New Domain IP: Necessary
     -m, --mask <netmask>             New Domain NetMask: Default 255.255.255.0
+    -M, --mac <mac>                  New Domain mac address: Default random
     -g, --gate <gateway>             New Domain DefaultGateway: Default 192.168.0.1
     -p, --partition <partition>      Dom root Partition Name: Default /dev/mapper/VolGroup-lv_root
-    -s, --snap <snapshot>            New Dom Fast Snapshot Name: Default provisioning_default
+    -s, --snap <snapshot>            New Domain Fast Snapshot Name: Default provisioning_default
 
 License
 ----
