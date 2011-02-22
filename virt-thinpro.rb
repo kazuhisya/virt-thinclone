@@ -198,13 +198,18 @@ if OPTIONS[:org_dom] and OPTIONS[:new_dom] and OPTIONS[:new_dom_ip] then
 
     create_snapshot = new_vm.snapshot_create_xml(snap_doc.to_s)
 
+    # clean LibvirtConnection obj
+    org_vm.free
+    new_vm.free
+    conn.close
+
 
   rescue => ex
     abort("Error #{ex.message}")
   else
     puts  "Success: #{OPTIONS[:new_dom]}"
   ensure
-    unless conn.nil?
+    unless conn.closed?
       conn.close
     end
   end
