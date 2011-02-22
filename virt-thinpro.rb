@@ -157,7 +157,7 @@ if OPTIONS[:org_dom] and OPTIONS[:new_dom] and OPTIONS[:new_dom_ip] then
     #p if_file
 
     # make new udev file
-    udev_file_path = "#{tmp}/#{OPTIONS[:new_dom]}_70-presistent-net.rules.txt"
+    udev_file_path = "#{tmp}/#{OPTIONS[:new_dom]}_70-persistent-net.rules.txt"
 
     udev_file = File.open(udev_file_path,'w')
     udev_file.puts "SUBSYSTEM==\"net\", ACTION==\"add\", DRIVERS==\"?*\", ATTR{address}==\"#{new_mac}\", ATTR{type}==\"1\", KERNEL==\"eth*\", NAME=\"eth0\""
@@ -168,7 +168,7 @@ if OPTIONS[:org_dom] and OPTIONS[:new_dom] and OPTIONS[:new_dom_ip] then
     # edit guest file system
     edit_new_disk_cmd = "#{guestfish} add #{new_disk_path} : run : mount #{guest_root_part} / : \
       upload #{if_file_path} /etc/sysconfig/network-scripts/ifcfg-eth0 : \
-      upload #{udev_file_path} /etc/udev/rules.d/70-presistent-net.rules : \
+      upload #{udev_file_path} /etc/udev/rules.d/70-persistent-net.rules : \
       sync : umount-all : quit "
 
     #p edit_new_disk_cmd
