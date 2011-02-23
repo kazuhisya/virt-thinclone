@@ -17,7 +17,7 @@ require 'rexml/document'
 #     -i, --ip <ip>                    New Domain IP: Necessary
 #     -m, --mask <netmask>             New Domain NetMask: Default 255.255.255.0
 #     -g, --gate <gateway>             New Domain DefaultGateway: Default 192.168.0.1
-#     -M, --MAC <mac>                  New Domain Mac Address: Default random
+#     -M, --MAC <mac>                  New Domain MAC Address: Default random
 #     -p, --partition <partition>      Dom root Partition Name: Default /dev/mapper/VolGroup-lv_root
 #     -s, --snap <snapshot>            New Domain Fast Snapshot Name: Default provisioning_default
 
@@ -65,7 +65,7 @@ ARGV.options do |opts|
     end
   }
 
-  opts.on("-M", "--mac <mac>", "New Domain Mac Address: Default random") {|new_dom_mac|
+  opts.on("-M", "--mac <mac>", "New Domain MAC Address: Default random") {|new_dom_mac|
     OPTIONS[:new_dom_mac] = new_dom_mac
     unless OPTIONS[:new_dom_mac].nil?
       guest_mac = OPTIONS[:new_dom_mac]
