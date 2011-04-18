@@ -1,11 +1,11 @@
-virt-thinpro
+virt-thinclone
 ============
 Virt-ThinProvisioning
 Virtualmachine ThinProvisioning Clone Tool
 
 Usage
 -----
-Usage: virt-thinpro [options]
+Usage: virt-thinclone [options]
     -o, --original <name>            Original Domain Name: Necessary
     -n, --new <name>                 New Domain Name: Necessary
     -i, --ip <ip>                    New Domain IP: Necessary

@@ -11,7 +11,7 @@ require 'rexml/document'
 #
 # Released under an GPLv2+
 #
-# Usage: virt-thinpro [options]
+# Usage: virt-thinclone [options]
 #     -o, --original <name>            Original Domain Name: Necessary
 #     -n, --new <name>                 New Domain Name: Necessary
 #     -i, --ip <ip>                    New Domain IP: Necessary
@@ -25,7 +25,7 @@ require 'rexml/document'
 qemu_img = "/usr/bin/qemu-img"
 virt_clone = "/usr/bin/virt-clone"
 guestfish = "/usr/bin/guestfish"
-tmp = "/tmp/virt-thinpro"
+tmp = "/tmp/virt-thinclone"
 
 guest_mask = "255.255.255.0"
 guest_gate = "192.168.0.1"
@@ -214,6 +214,6 @@ if OPTIONS[:org_dom] and OPTIONS[:new_dom] and OPTIONS[:new_dom_ip] then
     end
   end
 else
-  abort("Help: virt-thinpro.rb -h")
+  abort("Help: virt-thinclone -h")
 end
 
